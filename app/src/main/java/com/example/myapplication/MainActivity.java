@@ -3,11 +3,13 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mylibrary.JniTest;
 import com.learn.clview_library.view.dragbubble.DragBubbleView;
+import com.learn.clview_library.view.wave.WaveView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,5 +31,8 @@ public class MainActivity extends AppCompatActivity {
         bt_reduction.setOnClickListener(o->{
             dragBubbleView.reset();
         });
+
+        WaveView waveView = findViewById(R.id.wv);
+        waveView.startAnim();
     }
 }
