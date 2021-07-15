@@ -7,4 +7,12 @@
         <attr name="textSize" format="dimension" />
         <attr name="textColor" format="color" />
     </declare-styleable>
+    <declare-styleable name="WaveView">
+        <attr name="waveHeight" format="dimension"/>
+        <attr name="waveCount" format="integer"/>
+        <attr name="waveColor" format="color"/>
+        <attr name="waveBackgroudColor" format="color"/>
+        <attr name="waveBackgroudShape" format="integer"/>
+        <attr name="bgHeight" format="dimension"/>
+    </declare-styleable>
 </resources>

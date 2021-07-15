@@ -33,6 +33,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         WaveView waveView = findViewById(R.id.wv);
-        waveView.startAnim();
+        //waveView.startAnim();
     }
 }
