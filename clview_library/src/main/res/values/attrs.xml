@@ -15,4 +15,13 @@
         <attr name="waveBackgroudShape" format="integer"/>
         <attr name="bgHeight" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="custom_wave_view_attr">
+
+        <attr name="circle_color" format="color"></attr>
+        <attr name="circle_background_color" format="color"></attr>
+        <attr name="progress_wave_color" format="color"></attr>
+        <attr name="progress_text_size" format="dimension"></attr>
+        <attr name="progress_text_color" format="color"></attr>
+
+    </declare-styleable>
 </resources>

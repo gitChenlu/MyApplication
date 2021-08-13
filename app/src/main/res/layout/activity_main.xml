@@ -36,12 +36,26 @@
         app:layout_constraintTop_toTopOf="parent"/>
     <com.learn.clview_library.view.wave.WaveView
         android:id="@+id/wv"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+<!--    <com.learn.clview_library.view.CustomWaveView
+        android:id="@+id/custom_circle_wave_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:circle_color = "#ffff00"
+        android:layout_centerInParent="true"
+        app:circle_background_color = "#ff00ff"
+        app:progress_wave_color = "@color/colorAccent"
+        app:progress_text_size = "20sp"
+        app:progress_text_color = "#000000"/>-->
     <Button
         android:id="@+id/bt_reduction"
         android:layout_width="wrap_content"

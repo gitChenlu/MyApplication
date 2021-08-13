@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -70,6 +72,15 @@ public class WaveView extends View {
      */
     private float bgHeight;
 
+    private Paint bgPaint;
+
+    /**
+     * 波浪的画布
+     */
+    private Canvas waveCanvas;
+
+    private Bitmap waveBitmap;
+
     public WaveView(Context context) {
         this(context,null);
     }
@@ -89,7 +100,7 @@ public class WaveView extends View {
         waveHeight = array.getDimension(R.styleable.WaveView_waveHeight,150);
         waveColor = array.getColor(R.styleable.WaveView_waveColor,Color.GRAY);
         waveCount = array.getInteger(R.styleable.WaveView_waveCount,1);
-        waveBackgroudColor = array.getColor(R.styleable.WaveView_waveBackgroudColor,Color.WHITE);
+        waveBackgroudColor = array.getColor(R.styleable.WaveView_waveBackgroudColor,Color.RED);
         waveBackgroudShape = array.getInteger(R.styleable.WaveView_waveBackgroudShape,0);
         bgHeight = array.getDimension(R.styleable.WaveView_bgHeight,0);
         wavePath = new Path();
@@ -98,8 +109,15 @@ public class WaveView extends View {
     private void initPaint(){
         wavePaint = new Paint();
         wavePaint.setColor(waveColor);
+        wavePaint.setAntiAlias(true);
         wavePaint.setStyle(Paint.Style.FILL);
+        wavePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
+        bgPaint = new Paint();
+        bgPaint.setAntiAlias(true);
+        bgPaint.setColor(waveBackgroudColor);
+        bgPaint.setStyle(Paint.Style.FILL);
+        bgPaint.setStrokeWidth(5);
     }
 
     @Override
@@ -111,8 +129,18 @@ public class WaveView extends View {
     }
 
     private void paintShader(){
-        Bitmap bitmap = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+        if(getWidth()<=0||getHeight()<=0){
+            return;
+        }
+        waveBitmap = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);
+        waveCanvas = new Canvas(waveBitmap);
+
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        waveCanvas.drawCircle(width/2,height/2,height/2,bgPaint);
         wavePath.reset();
         wavePath.moveTo(-width+dx,waveHeight);
         //利用二阶贝塞尔曲线绘制
@@ -120,24 +148,17 @@ public class WaveView extends View {
             wavePath.rQuadTo(width / 4, -waveHeight, width / 2, 0);
             wavePath.rQuadTo(width / 4, waveHeight, width / 2, 0);
         }
-        //wavePath.quadTo(width / 4, -150, width / 2, 0);
-        //wavePath.quadTo(width * 3 / 4, 150, width , 0);
         wavePath.lineTo(width,height);
         wavePath.lineTo(0,height);
         wavePath.close();
-        canvas.drawPath(wavePath,wavePaint);
-        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        wavePaint.setShader(shader);
-    }
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawCircle(width/2,height/2,height/2,wavePaint);
+        waveCanvas.drawPath(wavePath,wavePaint);
+        canvas.drawBitmap(waveBitmap,0,0,null);
+        //canvas.drawCircle(width/2,height/2,width/2,bgPaint);
     }
 
     public void startAnim(){
         ValueAnimator anim = ValueAnimator.ofFloat(0,1);
-        anim.setDuration(2000);
+        anim.setDuration(2*1000);
         anim.setInterpolator(new LinearInterpolator());
         anim.setRepeatCount(ValueAnimator.INFINITE);
         anim.addUpdateListener(animation->{
