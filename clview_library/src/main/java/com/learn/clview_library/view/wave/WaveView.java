@@ -31,6 +31,7 @@ import com.learn.clview_library.R;
  */
 public class WaveView extends View {
 
+    private int MAX_PROGRESS = 100;
     /**
      * 控件的宽度
      */
@@ -74,12 +75,18 @@ public class WaveView extends View {
 
     private Paint bgPaint;
 
+    private Paint edgePaint;
     /**
      * 波浪的画布
      */
     private Canvas waveCanvas;
 
     private Bitmap waveBitmap;
+
+    //水位上升的高度
+    private float depth;
+
+    private int currentProgress;
 
     public WaveView(Context context) {
         this(context,null);
@@ -97,10 +104,10 @@ public class WaveView extends View {
 
     private void initView(Context context, AttributeSet attrs,int def){
         TypedArray array = context.obtainStyledAttributes(attrs,R.styleable.WaveView);
-        waveHeight = array.getDimension(R.styleable.WaveView_waveHeight,150);
+        waveHeight = array.getDimension(R.styleable.WaveView_waveHeight,100);
         waveColor = array.getColor(R.styleable.WaveView_waveColor,Color.GRAY);
         waveCount = array.getInteger(R.styleable.WaveView_waveCount,1);
-        waveBackgroudColor = array.getColor(R.styleable.WaveView_waveBackgroudColor,Color.RED);
+        waveBackgroudColor = array.getColor(R.styleable.WaveView_waveBackgroudColor,Color.WHITE);
         waveBackgroudShape = array.getInteger(R.styleable.WaveView_waveBackgroudShape,0);
         bgHeight = array.getDimension(R.styleable.WaveView_bgHeight,0);
         wavePath = new Path();
@@ -117,7 +124,12 @@ public class WaveView extends View {
         bgPaint.setAntiAlias(true);
         bgPaint.setColor(waveBackgroudColor);
         bgPaint.setStyle(Paint.Style.FILL);
-        bgPaint.setStrokeWidth(5);
+
+        edgePaint = new Paint();
+        edgePaint.setAntiAlias(true);
+        edgePaint.setColor(Color.BLUE);
+        edgePaint.setStyle(Paint.Style.STROKE);
+        edgePaint.setStrokeWidth(5);
     }
 
     @Override
@@ -140,9 +152,10 @@ public class WaveView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        depth = height * ((float) currentProgress/MAX_PROGRESS);
         waveCanvas.drawCircle(width/2,height/2,height/2,bgPaint);
         wavePath.reset();
-        wavePath.moveTo(-width+dx,waveHeight);
+        wavePath.moveTo(-width+dx,height - depth);
         //利用二阶贝塞尔曲线绘制
         for (int i=0;i<waveCount+1;i++){
             wavePath.rQuadTo(width / 4, -waveHeight, width / 2, 0);
@@ -153,7 +166,7 @@ public class WaveView extends View {
         wavePath.close();
         waveCanvas.drawPath(wavePath,wavePaint);
         canvas.drawBitmap(waveBitmap,0,0,null);
-        //canvas.drawCircle(width/2,height/2,width/2,bgPaint);
+        canvas.drawCircle(width/2,height/2,width/2,edgePaint);
     }
 
     public void startAnim(){
@@ -167,5 +180,9 @@ public class WaveView extends View {
             postInvalidate();
         });
         anim.start();
+    }
+
+    public void setProgress(int progress){
+        currentProgress = progress;
     }
 }

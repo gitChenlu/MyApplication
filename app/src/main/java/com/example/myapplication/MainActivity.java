@@ -13,7 +13,12 @@ import android.widget.TextView;
 import com.example.mylibrary.JniTest;
 import com.learn.clview_library.view.CustomWaveView;
 import com.learn.clview_library.view.dragbubble.DragBubbleView;
+import com.learn.clview_library.view.wave.ArcView;
 import com.learn.clview_library.view.wave.WaveView;
+import com.learn.rxjava_library.Emitter;
+import com.learn.rxjava_library.Observable;
+import com.learn.rxjava_library.ObservableOnSubscrible;
+import com.learn.rxjava_library.Observer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //text = findViewById(R.id.text);
+
+    }
+
+    private void kotlinTest(){
+
+    }
+    private void dragBubbleView(){
         /*DragBubbleView dragBubbleView = findViewById(R.id.drag_view);
         Button bt_reduction = findViewById(R.id.bt_reduction);
         dragBubbleView.setText("99+");
@@ -56,11 +68,19 @@ public class MainActivity extends AppCompatActivity {
         bt_reduction.setOnClickListener(o->{
             dragBubbleView.reset();
         });
+    }
 
+    private void waveView(){
         WaveView waveView = findViewById(R.id.wv);
         waveView.startAnim();
+        waveView.setProgress(30);
 
-/*        waveView = (CustomWaveView)findViewById(R.id.custom_circle_wave_view);
+        ArcView arcView = findViewById(R.id.arcView);
+        arcView.setProgress(40);
+    }
+
+    private void customWaveViewTest(){
+        /*        waveView = (CustomWaveView)findViewById(R.id.custom_circle_wave_view);
         //设置圆的半径
         waveView.setRadius(100);
         //设置进度最大值
@@ -82,5 +102,35 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();*/
+    }
+
+    private void observableTest(){
+        Observable.create(new ObservableOnSubscrible<String>() {
+            @Override
+            public void subscrible(Emitter<String> emitter) {
+                Log.d("jimilog","jimilog subscrible start");
+                emitter.onNext("this is test");
+            }
+        }).subscribleObserver(new Observer<String>() {
+            @Override
+            public void onNext(String s) {
+                Log.d("jimilog","jimilog s="+s);
+            }
+
+            @Override
+            public void onSubscribe() {
+
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }

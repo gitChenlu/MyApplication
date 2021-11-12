@@ -24,4 +24,12 @@
         <attr name="progress_text_color" format="color"></attr>
 
     </declare-styleable>
+
+    <declare-styleable name="ArcView">
+        <attr name="bg_circle_color" format="color"/>
+        <attr name="circle_size" format="integer"/>
+        <attr name="arc_color" format="color"/>
+        <attr name="text_color" format="color"/>
+        <attr name="text_size" format="integer"/>
+    </declare-styleable>
 </resources>

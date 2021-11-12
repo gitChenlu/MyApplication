@@ -45,4 +45,6 @@ dependencies {
 
     implementation project(':mylibrary')
     implementation project(':clview_library')
+    implementation project(':rxjava_library')
+    implementation project(':KotlinStudy')
 }
